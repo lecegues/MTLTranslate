@@ -3,6 +3,7 @@
 # Only change: Use OpenAI API to fix grammar
 
 # for openai
+import time
 import os
 import openai
 
@@ -38,10 +39,9 @@ def addDoc(filename: str, header: str, paragraphs: list):
 
     document.save(filename)
 
-def main():
+def main(website):
 
-    # Ask for website URL
-    website = input("Give the website address: ")
+    # Retrieve website URL from text file (1-liners)
     word_limit =  200 # hardcoded
     
     novel_info = split.scrapeSite(website, 200)
@@ -54,6 +54,7 @@ def main():
     for text in novel_paragraphs:
         to_add = fixText(text)
         fixed_novel_paragraphs.append(to_add)
+        time.sleep(10)
 
     # now we just put the text into a word document
     # @TODO currently hard-coded - fix
@@ -62,5 +63,12 @@ def main():
 
 
     print("-----Ending Process-----")
+
 if __name__ == "__main__":
-    main()
+
+    with open('sites.txt','r') as f:
+        lines = f.readlines()
+    
+    for website in lines:
+        main(website.strip())
+        time.sleep(15)

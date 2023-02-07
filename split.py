@@ -1,9 +1,12 @@
 # for extracting text
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 
-# initialize webdriver
-driver = webdriver.Chrome()
+
+# fix a bug
+options = Options()
+options.add_argument('--disable-blink-features=AutomationControlled')
 
 def split_text_into_paragraphs(text: str, word_count: int) -> list:
     '''
@@ -43,6 +46,7 @@ def retrieveText(url):
     Retrieves text from a given website (in this case novelHall)
     website: a string URL to retrieve the text from
     '''
+    driver = webdriver.Chrome()
     driver.get(url)
 
     # find the text in the website
@@ -67,6 +71,8 @@ def scrapeSite(website: str, word_limit: int):
     website: the url to scrape from
     word_limit: the word limit for each paragraph
     '''
+    # initialize webdriver
+
     novel_info = retrieveText(website)
     novel_text = novel_info['text']
 
